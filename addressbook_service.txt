@@ -1,0 +1,69 @@
+//creating a database
+create database addressbook_service
+
+// switch to a database
+use addressbook_service
+
+
+//creating a table inside of database
+create table addressbook{
+FirstName varchar(50),
+LastName varchar(50),
+Address  varchar(20),
+City     varchar(20),
+State    varchar(20),
+Zip    smallint,
+PhoneNumber bigint,
+Email   varchar(40)
+);
+
+// insert data inside table
+insert into addressbook values ('Harshit','Sharma','32/Sector-33','Gurgaon','Haryana',231,9572342424,'harshit@gmail.com');
+insert into addressbook values('Garima','Sharma','33/Sector-5','Gurgaon','Haryana',236,9537342424,'garima@gmail.com');
+
+//edit details based on firstname
+Update addressbook
+set LastName = 'Jhunjhunwala'
+where FirstNAme = 'Garima';
+
+//delete records based on lastname
+delete from addressbook
+where LastName = 'Sharma';
+
+//insert data inside table
+insert into addressbook values ('Harshit','Sharma','32/Sector-33','Gurgaon','Haryana',231,9572342424,'harshit@gmail.com');
+insert into addressbook values ('Harshit','Sharma','32/Sector-33','Faridabad','Haryana',231,9572342424,'harshit@gmail.com');
+insert into addressbook values ('Harshit','Sharma','32/Sector-33','Saharanpur','Uttar Pradesh',231,9572342424,'harshit@gmail.com');
+
+//getting contacts of a particular city
+select * from addressbook
+where city = 'Gurgaon';
+
+//getting contacts of a particular state
+select count(FirstName) from addressbook
+where state = 'Uttar Pradesh';
+select count(FirstName) from addressbook
+where state = 'Uttar Pradesh';
+
+//Getting the contacts of a city sorted by name 
+select * from addressbook
+where city = 'Gurgaon'
+order by FirstName, LastName;
+ 
+ //Providing type in addressbook
+alter table addressbook
+add Type varchar(20);
+Update addressbook
+set type = 'Family'
+where LastName = 'Sharma';
+Update addressbook
+set type = 'Friend'
+where LastName = 'Jhunjhunwala';
+
+//getting contact count of type family
+select count(FirstName) from addressbook
+where type = 'Family';
+
+//adding same contact to different types
+insert into addressbook
+values ('Harshit','Sharma','31/Secotr-12','Gurgaon','Haryana',234,9876543210,'harshit@gmail.com','Friend');
