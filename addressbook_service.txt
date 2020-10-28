@@ -67,3 +67,548 @@ where type = 'Family';
 //adding same contact to different types
 insert into addressbook
 values ('Harshit','Sharma','31/Secotr-12','Gurgaon','Haryana',234,9876543210,'harshit@gmail.com','Friend');
+
+mysql> show databases
+    -> ;
++--------------------------+
+| Database                 |
++--------------------------+
+| addressbook_service      |
+| employee_payroll_service |
+| information_schema       |
+| mysql                    |
+| performance_schema       |
+| sakila                   |
+| sys                      |
+| world                    |
++--------------------------+
+8 rows in set (0.12 sec)
+
+mysql> use addressbook_service
+Database changed
+mysql> show tables;
++-------------------------------+
+| Tables_in_addressbook_service |
++-------------------------------+
+| addressbook                   |
++-------------------------------+
+1 row in set (0.00 sec)
+
+mysql> select * in addressbook
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'in addressbook' at line 1
+mysql> select * from addressbook;
++-----------+--------------+--------------+------------+---------------+------+-------------+-------------------+--------+
+| FirstName | LastName     | Address      | City       | State         | Zip  | PhoneNumber | Email             | Type   |
++-----------+--------------+--------------+------------+---------------+------+-------------+-------------------+--------+
+| Garima    | Jhunjhunwala | 33/Sector-5  | Gurgaon    | Haryana       |  236 |  9537342424 | garima@gmail.com  | Friend |
+| Harshit   | Sharma       | 32/Sector-33 | Gurgaon    | Haryana       |  231 |  9572342424 | harshit@gmail.com | Family |
+| Harshit   | Sharma       | 32/Sector-33 | Faridabad  | Haryana       |  231 |  9572342424 | harshit@gmail.com | Family |
+| Harshit   | Sharma       | 32/Sector-33 | Saharanpur | Uttar Pradesh |  231 |  9572342424 | harshit@gmail.com | Family |
+| Harshit   | Sharma       | 31/Secotr-12 | Gurgaon    | Haryana       |  234 |  9876543210 | harshit@gmail.com | Friend |
++-----------+--------------+--------------+------------+---------------+------+-------------+-------------------+--------+
+5 rows in set (0.05 sec)
+
+mysql> create table relations(
+    -> type varchar(20) not null,
+    -> ^C
+mysql> create table relations(
+    -> type varchar(20) not null);
+Query OK, 0 rows affected (1.69 sec)
+
+mysql> drop table relations;
+Query OK, 0 rows affected (0.64 sec)
+
+mysql> create table relations(
+    -> type varchar(20) primary key);
+Query OK, 0 rows affected (0.92 sec)
+
+mysql> create table Address(
+    -> Zip_code double not null.
+    -> ^C
+mysql> create table Address(
+    -> Zip_code double not null,
+    -> City varchar(20) not null default 'Gurugram',
+    -> State varchar(20) not null default 'Haryana');
+Query OK, 0 rows affected (0.47 sec)
+
+mysql> alter table Address
+    -> add primary key(zip_code);
+Query OK, 0 rows affected (1.27 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> creare table contacts(
+    -> First_name varchar(20) not null,
+    -> Last_name varchar(20) not null,
+    -> address varchar(20) not null,
+    -> zip double not null,
+    -> Phone_number double not null,
+    -> Email varchar(20) not null,
+    -> relation_type varchar(20) not null,
+    -> primary key(First_name,Last_name));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'creare table contacts(
+First_name varchar(20) not null,
+Last_name varchar(20) no' at line 1
+mysql> create table contacts(
+    -> First_name varchar(20) not null,
+    -> Last_name varchar(20) not null,
+    -> address varchar(20) not null,
+    -> zip double not null,
+    -> Phone_number double not null,
+    -> Email varchar(20) not null,
+    -> relation_type varchar(20) not null,
+    -> primary key(First_name,Last_name));
+Query OK, 0 rows affected (0.99 sec)
+
+mysql> create table contacts_address(
+    -> zip double forign key references address(zip_code));^C
+mysql>
+mysql>
+mysql> alter table contacts
+    -> drop column zip;
+Query OK, 0 rows affected (2.09 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> create table contacts_address(
+    -> ^C
+mysql> alter table contacts
+    -> add zip double not null;
+Query OK, 0 rows affected (0.45 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table contacts
+    -> drop column zip;
+Query OK, 0 rows affected (2.22 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> create table contacts_address(
+    -> First_name varchar(20) foreign key references contacts(first_name),
+    -> Last_name varchar(20) foreign key references contacts(last_name),
+    -> zip double foreign key references address(zip_code)
+    -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'foreign key references contacts(first_name),
+Last_name varchar(20) foreign key r' at line 2
+mysql> create table contacts_address(
+    -> First_name varchar(20) not null,
+    -> Last_name varchar(20) not null,
+    -> zip deouble not null,
+    -> foreign key(First_name) references contacts(first_name));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'deouble not null,
+foreign key(First_name) references contacts(first_name))' at line 4
+mysql> create table contacts_address(
+    -> First_name varchar(20) not null,
+    -> Last_name varchar(20) not null,
+    -> zip double not null,
+    -> foreign key(First_name) references contacts(first_name));
+Query OK, 0 rows affected (1.15 sec)
+
+mysql> alter table contacts_address
+    -> add foreign key(last_name) references contacts(last_name);
+ERROR 1822 (HY000): Failed to add the foreign key constraint. Missing index for constraint 'contacts_address_ibfk_2' in the referenced table 'contacts'
+mysql> alter table contacts_address
+    -> add foreign key(Last_name) references contacts(Last_name);
+ERROR 1822 (HY000): Failed to add the foreign key constraint. Missing index for constraint 'contacts_address_ibfk_2' in the referenced table 'contacts'
+mysql> alter table contacts_address
+    -> add foreign key(zip) references address(zip_code);
+Query OK, 0 rows affected (3.25 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table contacts_address
+    -> add foreign key(Last_name) references contacts(Last_name);
+ERROR 1822 (HY000): Failed to add the foreign key constraint. Missing index for constraint 'contacts_address_ibfk_3' in the referenced table 'contacts'
+mysql> show full columns from contacts_address;
++------------+-------------+--------------------+------+-----+---------+-------+---------------------------------+---------+
+| Field      | Type        | Collation          | Null | Key | Default | Extra | Privileges                      | Comment |
++------------+-------------+--------------------+------+-----+---------+-------+---------------------------------+---------+
+| First_name | varchar(20) | utf8mb4_0900_ai_ci | NO   | MUL | NULL    |       | select,insert,update,references |         |
+| Last_name  | varchar(20) | utf8mb4_0900_ai_ci | NO   |     | NULL    |       | select,insert,update,references |         |
+| zip        | double      | NULL               | NO   | MUL | NULL    |       | select,insert,update,references |         |
++------------+-------------+--------------------+------+-----+---------+-------+---------------------------------+---------+
+3 rows in set (0.09 sec)
+
+mysql> show full columns from contacts;
++---------------+-------------+--------------------+------+-----+---------+-------+---------------------------------+---------+
+| Field         | Type        | Collation          | Null | Key | Default | Extra | Privileges                      | Comment |
++---------------+-------------+--------------------+------+-----+---------+-------+---------------------------------+---------+
+| First_name    | varchar(20) | utf8mb4_0900_ai_ci | NO   | PRI | NULL    |       | select,insert,update,references |         |
+| Last_name     | varchar(20) | utf8mb4_0900_ai_ci | NO   | PRI | NULL    |       | select,insert,update,references |         |
+| address       | varchar(20) | utf8mb4_0900_ai_ci | NO   |     | NULL    |       | select,insert,update,references |         |
+| Phone_number  | double      | NULL               | NO   |     | NULL    |       | select,insert,update,references |         |
+| Email         | varchar(20) | utf8mb4_0900_ai_ci | NO   |     | NULL    |       | select,insert,update,references |         |
+| relation_type | varchar(20) | utf8mb4_0900_ai_ci | NO   |     | NULL    |       | select,insert,update,references |         |
++---------------+-------------+--------------------+------+-----+---------+-------+---------------------------------+---------+
+6 rows in set (0.00 sec)
+
+mysql> alter table contacts_address
+    -> add primary key(First_name,Last_name);
+Query OK, 0 rows affected (2.25 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table contacts_address
+    -> add foreign key(Last_name) references contacts(Last_name);
+ERROR 1822 (HY000): Failed to add the foreign key constraint. Missing index for constraint 'contacts_address_ibfk_3' in the referenced table 'contacts'
+mysql> show full columns from contacts_address;
++------------+-------------+--------------------+------+-----+---------+-------+---------------------------------+---------+
+| Field      | Type        | Collation          | Null | Key | Default | Extra | Privileges                      | Comment |
++------------+-------------+--------------------+------+-----+---------+-------+---------------------------------+---------+
+| First_name | varchar(20) | utf8mb4_0900_ai_ci | NO   | PRI | NULL    |       | select,insert,update,references |         |
+| Last_name  | varchar(20) | utf8mb4_0900_ai_ci | NO   | PRI | NULL    |       | select,insert,update,references |         |
+| zip        | double      | NULL               | NO   | MUL | NULL    |       | select,insert,update,references |         |
++------------+-------------+--------------------+------+-----+---------+-------+---------------------------------+---------+
+3 rows in set (0.00 sec)
+
+mysql> show full columns from contacts;
++---------------+-------------+--------------------+------+-----+---------+-------+---------------------------------+---------+
+| Field         | Type        | Collation          | Null | Key | Default | Extra | Privileges                      | Comment |
++---------------+-------------+--------------------+------+-----+---------+-------+---------------------------------+---------+
+| First_name    | varchar(20) | utf8mb4_0900_ai_ci | NO   | PRI | NULL    |       | select,insert,update,references |         |
+| Last_name     | varchar(20) | utf8mb4_0900_ai_ci | NO   | PRI | NULL    |       | select,insert,update,references |         |
+| address       | varchar(20) | utf8mb4_0900_ai_ci | NO   |     | NULL    |       | select,insert,update,references |         |
+| Phone_number  | double      | NULL               | NO   |     | NULL    |       | select,insert,update,references |         |
+| Email         | varchar(20) | utf8mb4_0900_ai_ci | NO   |     | NULL    |       | select,insert,update,references |         |
+| relation_type | varchar(20) | utf8mb4_0900_ai_ci | NO   |     | NULL    |       | select,insert,update,references |         |
++---------------+-------------+--------------------+------+-----+---------+-------+---------------------------------+---------+
+6 rows in set (0.00 sec)
+
+mysql> alter table contacts_address
+    -> drop foreign key contacts_address_ibfk_2,
+    -> drop foreign key contacts_address_ibfk_1;
+Query OK, 0 rows affected (0.24 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> drop table contacts_address
+    -> ;
+Query OK, 0 rows affected (0.51 sec)
+
+mysql> create table contacts_address(
+    -> First_name varchar(20) not null,
+    -> Last_name varchar(20) not null,
+    -> zip double not null,
+    -> foreign key(First_name) references contacts(first_name),
+    -> foreign key(Last_name) references contacts(last_name),
+    -> foreign key(zip) references address(zip_code)
+    -> );
+ERROR 1822 (HY000): Failed to add the foreign key constraint. Missing index for constraint 'contacts_address_ibfk_2' in the referenced table 'contacts'
+mysql> create table contacts_address(
+    -> First_name varchar(20) not null,
+    -> Last_name varchar(20) not null,
+    -> zip double not null,
+    -> foreign key(First_name) references contacts(first_name),
+    -> foreign key(zip) references address(zip_code)
+    -> );
+Query OK, 0 rows affected (0.70 sec)
+
+mysql> alter table contacts_address(
+    -> foreign key(last_name) references contacts(last_name);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '(
+foreign key(last_name) references contacts(last_name)' at line 1
+mysql> alter table contacts_address(
+    -> alter table contacts_address(^C
+mysql> alter table contacts_address
+    -> foreign key(last_name) references contacts(last_name);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'foreign key(last_name) references contacts(last_name)' at line 2
+mysql> alter table contacts_address
+    -> add foreign key(last_name) references contacts(last_name);
+ERROR 1822 (HY000): Failed to add the foreign key constraint. Missing index for constraint 'contacts_address_ibfk_3' in the referenced table 'contacts'
+mysql> alter table contacts
+    -> drop column last_name;
+Query OK, 0 rows affected (2.19 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table contacts
+    -> add last_name varchar(20) not null;
+Query OK, 0 rows affected (1.11 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table contacts_address
+    -> add foreign key(last_name) references contacts(last_name);
+ERROR 1822 (HY000): Failed to add the foreign key constraint. Missing index for constraint 'contacts_address_ibfk_3' in the referenced table 'contacts'
+mysql> show all columns contacts;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'all columns contacts' at line 1
+mysql> show full columns contacts;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'contacts' at line 1
+mysql> show full columns from contacts;
++---------------+-------------+--------------------+------+-----+---------+-------+---------------------------------+---------+
+| Field         | Type        | Collation          | Null | Key | Default | Extra | Privileges                      | Comment |
++---------------+-------------+--------------------+------+-----+---------+-------+---------------------------------+---------+
+| First_name    | varchar(20) | utf8mb4_0900_ai_ci | NO   | PRI | NULL    |       | select,insert,update,references |         |
+| address       | varchar(20) | utf8mb4_0900_ai_ci | NO   |     | NULL    |       | select,insert,update,references |         |
+| Phone_number  | double      | NULL               | NO   |     | NULL    |       | select,insert,update,references |         |
+| Email         | varchar(20) | utf8mb4_0900_ai_ci | NO   |     | NULL    |       | select,insert,update,references |         |
+| relation_type | varchar(20) | utf8mb4_0900_ai_ci | NO   |     | NULL    |       | select,insert,update,references |         |
+| last_name     | varchar(20) | utf8mb4_0900_ai_ci | NO   |     | NULL    |       | select,insert,update,references |         |
++---------------+-------------+--------------------+------+-----+---------+-------+---------------------------------+---------+
+6 rows in set (0.10 sec)
+
+mysql> alter table contacts_address
+    -> drop column last_name;
+Query OK, 0 rows affected (1.92 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table contacts_address
+    -> add last_name varchar(20) not null;
+Query OK, 0 rows affected (1.63 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table contacts_address
+    -> add foreign key(last_name) references contacts(last_name);
+ERROR 1822 (HY000): Failed to add the foreign key constraint. Missing index for constraint 'contacts_address_ibfk_3' in the referenced table 'contacts'
+mysql> show full columns from contacts_address;
++------------+-------------+--------------------+------+-----+---------+-------+---------------------------------+---------+
+| Field      | Type        | Collation          | Null | Key | Default | Extra | Privileges                      | Comment |
++------------+-------------+--------------------+------+-----+---------+-------+---------------------------------+---------+
+| First_name | varchar(20) | utf8mb4_0900_ai_ci | NO   | MUL | NULL    |       | select,insert,update,references |         |
+| zip        | double      | NULL               | NO   | MUL | NULL    |       | select,insert,update,references |         |
+| last_name  | varchar(20) | utf8mb4_0900_ai_ci | NO   |     | NULL    |       | select,insert,update,references |         |
++------------+-------------+--------------------+------+-----+---------+-------+---------------------------------+---------+
+3 rows in set (0.00 sec)
+
+mysql> show full columns from contacts;
++---------------+-------------+--------------------+------+-----+---------+-------+---------------------------------+---------+
+| Field         | Type        | Collation          | Null | Key | Default | Extra | Privileges                      | Comment |
++---------------+-------------+--------------------+------+-----+---------+-------+---------------------------------+---------+
+| First_name    | varchar(20) | utf8mb4_0900_ai_ci | NO   | PRI | NULL    |       | select,insert,update,references |         |
+| address       | varchar(20) | utf8mb4_0900_ai_ci | NO   |     | NULL    |       | select,insert,update,references |         |
+| Phone_number  | double      | NULL               | NO   |     | NULL    |       | select,insert,update,references |         |
+| Email         | varchar(20) | utf8mb4_0900_ai_ci | NO   |     | NULL    |       | select,insert,update,references |         |
+| relation_type | varchar(20) | utf8mb4_0900_ai_ci | NO   |     | NULL    |       | select,insert,update,references |         |
+| last_name     | varchar(20) | utf8mb4_0900_ai_ci | NO   |     | NULL    |       | select,insert,update,references |         |
++---------------+-------------+--------------------+------+-----+---------+-------+---------------------------------+---------+
+6 rows in set (0.00 sec)
+
+mysql> show tables
+    -> ;
++-------------------------------+
+| Tables_in_addressbook_service |
++-------------------------------+
+| address                       |
+| addressbook                   |
+| contacts                      |
+| contacts_address              |
+| relations                     |
++-------------------------------+
+5 rows in set (0.04 sec)
+
+mysql> select * from relations;
+Empty set (0.05 sec)
+
+mysql> describe relations;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| type  | varchar(20) | NO   | PRI | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+1 row in set (0.00 sec)
+
+mysql> create table contacts_relation(
+    -> first_name varchar(20) not null,
+    -> type varchar(20) not null,
+    -> foreign key(first_name) references contacts(first_name),
+    -> foreign key(last_name) references relations(type)
+    -> );
+ERROR 1072 (42000): Key column 'last_name' doesn't exist in table
+mysql> create table contacts_relation(
+    -> first_name varchar(20) not null,
+    -> type varchar(20) not null,
+    -> foreign key(first_name) references contacts(first_name),
+    -> foreign key(type) references relations(type)
+    -> );
+Query OK, 0 rows affected (0.93 sec)
+
+mysql> insert into relations values('Family');
+Query OK, 1 row affected (0.14 sec)
+
+mysql> insert into relations values('Friends');
+Query OK, 1 row affected (0.24 sec)
+
+mysql> insert into relations values('Professionals');
+Query OK, 1 row affected (0.15 sec)
+
+mysql> insert into address values('');
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql> describe address;
++----------+-------------+------+-----+----------+-------+
+| Field    | Type        | Null | Key | Default  | Extra |
++----------+-------------+------+-----+----------+-------+
+| Zip_code | double      | NO   | PRI | NULL     |       |
+| City     | varchar(20) | NO   |     | Gurugram |       |
+| State    | varchar(20) | NO   |     | Haryana  |       |
++----------+-------------+------+-----+----------+-------+
+3 rows in set (0.03 sec)
+
+mysql> insert into address values(110038,'Gurugram','Haryana');
+Query OK, 1 row affected (0.17 sec)
+
+mysql> insert into address values(101213,'Faridabad','Haryana');
+Query OK, 1 row affected (0.10 sec)
+
+mysql> insert into address values(247001,'Saharanpur','Uttar Pradesh');
+Query OK, 1 row affected (0.11 sec)
+
+mysql> describe contacts;
++---------------+-------------+------+-----+---------+-------+
+| Field         | Type        | Null | Key | Default | Extra |
++---------------+-------------+------+-----+---------+-------+
+| First_name    | varchar(20) | NO   | PRI | NULL    |       |
+| address       | varchar(20) | NO   |     | NULL    |       |
+| Phone_number  | double      | NO   |     | NULL    |       |
+| Email         | varchar(20) | NO   |     | NULL    |       |
+| relation_type | varchar(20) | NO   |     | NULL    |       |
+| last_name     | varchar(20) | NO   |     | NULL    |       |
++---------------+-------------+------+-----+---------+-------+
+6 rows in set (0.23 sec)
+
+mysql> insert into contacts values('Agam','32/Sector-16',9879879876,'agam@gmail.com','Professionals','Khandelwal');
+Query OK, 1 row affected (0.16 sec)
+
+mysql> insert into contacts values('Akshat','24/Sector-23',9879879342,'akshat@gmail.com','Professionals','Chaddha');
+Query OK, 1 row affected (0.13 sec)
+
+mysql> insert into contacts values('Niharika','25/Sector-48',9879879264,'nihamija@gmail.com','Friends','dhamija');
+Query OK, 1 row affected (0.10 sec)
+
+mysql> insert into contacts values('Muskan','925/Sector-28',9324312345,'musupta@gmail.com','Friends','gupta');
+Query OK, 1 row affected (0.16 sec)
+
+mysql> insert into contacts values('Rishabh','97/Sector-02',9324357745,'rishupta@gmail.com','Friend','gupta');
+Query OK, 1 row affected (0.12 sec)
+
+mysql> insert into contacts values('Shivam','420/Sector-36',8555523456,'rishupta@gmail.com','Family','gupta');
+Query OK, 1 row affected (0.16 sec)
+
+mysql> describe contacts_address;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| First_name | varchar(20) | NO   | MUL | NULL    |       |
+| zip        | double      | NO   | MUL | NULL    |       |
+| last_name  | varchar(20) | NO   |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+3 rows in set (0.12 sec)
+
+mysql> insert into contacts_address values('Shivam',110038,'gupta');
+Query OK, 1 row affected (0.19 sec)
+
+mysql> insert into contacts_address values('Rishabh',110038,'gupta');
+Query OK, 1 row affected (0.12 sec)
+
+mysql> insert into contacts_address values('Muskan',247001,'gupta');
+Query OK, 1 row affected (0.12 sec)
+
+mysql> insert into contacts_address values('Niharika',247001,'dhamija');
+Query OK, 1 row affected (0.15 sec)
+
+mysql> insert into contacts_address values('Akshat',101213,'Chaddh');
+Query OK, 1 row affected (0.31 sec)
+
+mysql> insert into contacts_address values('Agam',101213,'khandelwal');
+Query OK, 1 row affected (0.14 sec)
+
+mysql> alter table contacts_address
+    -> drop column last_name;
+Query OK, 0 rows affected (2.57 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> show tables;
++-------------------------------+
+| Tables_in_addressbook_service |
++-------------------------------+
+| address                       |
+| addressbook                   |
+| contacts                      |
+| contacts_address              |
+| contacts_relation             |
+| relations                     |
++-------------------------------+
+6 rows in set (0.07 sec)
+
+mysql> alter table contacts
+    -> drop column relation_type;
+Query OK, 0 rows affected (1.99 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> insert into contacts_relation values('Agam','Professionals');
+Query OK, 1 row affected (0.14 sec)
+
+mysql> insert into contacts_relation values('Akshat','Professionals');
+Query OK, 1 row affected (0.14 sec)
+
+mysql> insert into contacts_relation values('Niharika','Friends');
+Query OK, 1 row affected (0.10 sec)
+
+mysql> insert into contacts_relation values('Muskan','Friends');
+Query OK, 1 row affected (0.12 sec)
+
+mysql> insert into contacts_relation values('Rishabh','Friends');
+Query OK, 1 row affected (0.41 sec)
+
+mysql> insert into contacts_relation values('Shivam','Family');
+Query OK, 1 row affected (0.12 sec)
+
+mysql> insert into contacts_relation values('Niharika','Family');
+Query OK, 1 row affected (0.46 sec)
+
+mysql> select contacts.first_name from contacts,contacts_address,address
+    -> where contacts.first_name = contacts_address.first_name and contacts_address.zip = address.zip_code and address.city = 'Gurugram';
++------------+
+| first_name |
++------------+
+| Shivam     |
+| Rishabh    |
++------------+
+2 rows in set (0.07 sec)
+
+mysql> select count(contacts.first_name) from contacts,contacts_address,address
+    -> where contacts.first_name = contacts_address.first_name and contacts_address.zip = address.zip_code and address.city = 'Gurugram';
++----------------------------+
+| count(contacts.first_name) |
++----------------------------+
+|                          2 |
++----------------------------+
+1 row in set (0.00 sec)
+
+mysql> select contacts.first_name from contacts,contacts_address,address
+    -> where contacts.first_name = contacts_address.first_name and contacts_address.zip = address.zip_code and address.city = 'Gurugram'
+    -> sorted by contacts.first_name;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'sorted by contacts.first_name' at line 3
+mysql> select contacts.first_name from contacts,contacts_address,address
+    -> where contacts.first_name = contacts_address.first_name and contacts_address.zip = address.zip_code and address.city = 'Gurugram'
+    -> order by contacts.first_name;
++------------+
+| first_name |
++------------+
+| Rishabh    |
+| Shivam     |
++------------+
+2 rows in set (0.00 sec)
+
+mysql> select contacts.first_name from contacts as c,contacts_relation as cr,relations as r
+    -> where c.first_name = cr.first_name and cr.type = r.type;
+ERROR 1054 (42S22): Unknown column 'contacts.first_name' in 'field list'
+mysql> select c.first_name from contacts as c,contacts_relation as cr,relations as r
+    -> where c.first_name = cr.first_name and cr.type = r.type;
++------------+
+| first_name |
++------------+
+| Agam       |
+| Akshat     |
+| Muskan     |
+| Niharika   |
+| Niharika   |
+| Rishabh    |
+| Shivam     |
++------------+
+7 rows in set (0.00 sec)
+
+mysql> select c.first_name from contacts as c,contacts_relation as cr,relations as r
+    -> where c.first_name = cr.first_name and cr.type = r.type and r.type = 'Friends';
++------------+
+| first_name |
++------------+
+| Muskan     |
+| Niharika   |
+| Rishabh    |
++------------+
+3 rows in set (0.00 sec)
+
+mysql>
